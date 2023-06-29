@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+    Shopping cart
+{% endblock %}
+
+{% block content %}
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Image</th>
+      <th scope="col">Product</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Remove</th>
+      <th scope="col">Unit price</th>
+      <th scope="col">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tbody>
+    {% for it in cart %}
+      {% with item=it.item %}
+      <tr>
+        <th scope="row">
+          <a href="{{ item.get_absolute_url }}"><img src="{{item.item_image.url }}" class="img-thumbnail"></a>
+        </th>
+        <td>{{ item.item_title }}</td>
+        <td>
+          <form class="" action="{% url 'cart:add_cart' item.id %}" method="post">
+            {{ it.quantity_form.quantity }}
+            {{ it.quantity_form.is_update }}
+            <input type="submit" class="btn btn-primary" value="Update">
+            {% csrf_token %}
+          </form>
+        </td>
+        <td><a href="{% url 'cart:remove_cart' item.id %}">Remove</a></td>
+        <td class="num">${{it.price}}</td>
+        <td class="num">${{it.total_price}}</td>
+      </tr>
+      {% endwith %}
+    {% endfor %}
+
+    {% if cart.coupon %}
+      <tr class="subtotal">
+        <td>Subtotal</td>
+        <td colspan="4"></td>
+        <td>${{ cart.get_product_total }}</td>
+      </tr>
+
+      <tr>
+        <td>"{{cart.coupon.code}}" coupon({{ cart.coupon.amount }})</td>
+        <td colspan="4"></td>
+        <td>- {{ cart.get_discount_total|floatformat:"2" }}</td>
+      </tr>
+    {% endif %}
+
+    <tr class="total">
+      <td>Total</td>
+      <td colspan="4"></td>
+      <td class="num">${{ cart.get_total_price|floatformat:"2" }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Add Coupon:</p>
+<form action="{% url 'coupon:add' %}" method="post">
+  {{add_coupon}}
+  <input type="submit" value="Add">
+  {% csrf_token %}
+</form>
+
+<p class="text-right"><a href="{% url 'item:item_list' %}" class="btn btn-secondary">Continue shopping</a></p>
+<a href="" class="btn btn-primary">Checkout</a>
+
+{% endblock %}

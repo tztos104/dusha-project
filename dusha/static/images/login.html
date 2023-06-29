@@ -1,0 +1,57 @@
+{% load account %}
+
+{% block content %}
+<section id="login">
+<div class="container_login right-panel-active">
+
+  <!-- 회원가입 -->
+  <div class="container_login__form container_login--signup">
+    <form action="{% url 'account_signup' %}" class="form" id="form1" method="POST" >
+      {% csrf_token %}
+      {% include 'form_errors.html' %}
+      <h2 class="form__title">Sign Up</h2>
+      <input type="text" placeholder="User" class="input" name="username"/>
+      <input type="email" placeholder="Email" class="input"  name="email"/>
+      <input type="password" placeholder="Password" class="input" name="password" />
+      <button type="submit" class="btn_log">Sign Up</button>
+    </form>
+  </div>
+
+  <!-- 로그인 -->
+  <div class="container_login__form container_login--signin">
+    <form action="{% url 'account_login' %}" class="form" id="form2" method="POST">
+      {% csrf_token %}
+
+      <h2 class="form__title">Sign In</h2>
+      <input type="email" placeholder="Email" class="input" name="email"/>
+
+      <input type="password" placeholder="Password" class="input" name="password"/>
+
+       {% if redirect_field_value %}
+    <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+    {% endif %}
+      <a href="{% url 'account_reset_password' %}" class="link">Forgot your password?</a>
+      <button type="submit" class="btn_log">Sign In</button>
+      <div class="login_div">{% include 'account/allauth_login.html'  with process="login"  %}</div>
+    </form>
+
+  </div>
+{% include "socialaccount/snippets/login_extra.html" %}
+  <!-- Overlay -->
+  <div class="container_login__overlay">
+    <div class="overlay">
+      <div class="overlay__panel overlay--left">
+        <button class="btn_log" id="signIn">Sign In</button>
+      </div>
+      <div class="overlay__panel overlay--right">
+        <button class="btn_log" id="signUp">Sign Up</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</section>
+
+{% endblock %}

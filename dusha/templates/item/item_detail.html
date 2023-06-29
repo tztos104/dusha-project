@@ -1,0 +1,56 @@
+{% extends 'base.html' %}{% load static %}
+{% block content %}
+<div class="container my-3" xmlns="http://www.w3.org/1999/html">
+    <section id="item_detail">
+
+        <h2 class="border-bottom py-2">{{ item.item_title }}</h2>
+       <!-- left img view -->
+    <div class="detail-img-gallery">
+      <div class="detail-img-wrapper">
+        <a href=""
+          ><img src="{{item.item_image.url}}" alt="이미지 상세 보기"
+        /></a>
+      </div>
+
+      <div class="detail-img-wrapper">
+        <a href=""><img src="{{ item.item_content.url}}" alt="이미지 상세 보기" /></a>
+      </div>
+
+    </div>
+
+  <!-- 버튼 -->
+          <div id="order-wrapper">
+            <span class="round-btn-big order-btn">바로구매</span>
+              <form action="{% url 'cart:add_cart' item.id %}" method="post">
+                  {{add_to_cart}}
+                  {% csrf_token %}
+            <span class="round-btn-big white" id="cart-btn"><input type="submit" value="장바구니 담기"></span>
+                  </form>
+          </div>
+          <!-- 리뷰 -->
+ <ul class="review-box">
+            <ui>
+              <div id="review-title">
+                <span>리뷰</span>
+                <p>
+                  <i class="xi-star-o"></i>
+                  <i class="xi-star-o"></i>
+                  <i class="xi-star-o"></i>
+                  <i class="xi-star-o"></i>
+                  <i class="xi-star-o"></i>
+                  <i class="xi-angle-down"></i>
+                </p>
+              </div>
+              <ul class="review-wrapper">
+                  <li class="my-review"></li>
+
+                </ul>
+            </ui>
+     </ul>
+    </section>
+</div>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
